@@ -1,16 +1,7 @@
 //Greet the user
+console.log('Hello. Would you like to play a game? Type "game();" to begin.');
 
-console.log('Hello. Would you like to play a game?');
-
-/*Instruct the user on protocol. You can enter rock, paper, or scissors as plain text.
-Make it case insensitive.*/
-
-/*After you prompt for input but before receiving it generate but don't print rock,
-paper, or scissors. Probably with a random number generator and some loops. If the
-number is 0-0.3 its rock if its 0.34-0.66 its paper, if its 0.67-1 its scissors. 
-Store the result.*/
-
-//Generate an output or 'choice' for the computer.'
+//Generate a random output or 'choice' for the computer.'
 function getComputerChoice(){
     let choiceInt = Math.floor((Math.random() * 9) + 1);
         if (choiceInt <= 3){
@@ -24,8 +15,7 @@ function getComputerChoice(){
         };
 }
 
-//Compares the player input and the computer output and determines the outcome of the game
-//Still need to rerun the game in the case of a tie
+//Compares the player input and the computer output and determines the outcome of the game. Called in the game() function.
 function playRound(player, computer){
     if (player == 'rock'){
         if (computer == 'rock'){
@@ -47,7 +37,7 @@ function playRound(player, computer){
         } else{
             console.log('error in the playRound function player paper choice.')
         } 
-    }else if (player == 'scissors'){
+    } else if (player == 'scissors'){
         if (computer == 'rock'){
             return 'lose';
         } else if (computer == 'paper'){
@@ -57,29 +47,52 @@ function playRound(player, computer){
         } else{
             console.log('error in the playRound function player scissors choice.')
         } 
-    }else {
+    } else {
         console.log('error in the playRound function generally.');
     }
 }
-/*Take the input from the user (as a prompt?) and compare it to the returned 
-random result. Probably need to do nested if statements for each input from the 
-user and each result or vice versa. There should be a more elegant way to do it. 
-I can't think of one now.*/
 
-/*Breaking this doesn we need to first get an input from the user*/
-
-/* Second set the function above to a value */
-
-/* Third run both of those through a funciton*/
-
-// TEST input. Will need to change this later.
-
-
-function game(){
-    const playerSelection = 'rock';
-    const computerSelection = getComputerChoice();
-
-    console.log('The computer chose ' + computerSelection + ' and you chose ' + playerSelection + ' so you: ' + (playRound(playerSelection, computerSelection)));
+//Prompt the user for an input and convert it to lower case to make it case insensitive.
+function getPlayerChoice(){
+    let playerPrompt = prompt('Would you like rock, paper, or scissors?', 'Type your choice here.');
+    if (typeof playerPrompt === 'string') {
+        playerPrompt = playerPrompt.toLowerCase();
+        return playerPrompt;
+    } else {
+        console.log('error. Please check your spelling and try again.')
+    }
 }
 
-/*print the results.*/
+
+//TEST CODE
+function game(){
+    let wins = 0;
+    let losses = 0;
+    let ties = 0;
+    while(wins < 5 && losses < 5){
+        let playerSelection = getPlayerChoice();
+        let computerSelection = getComputerChoice();
+        let result = playRound(playerSelection, computerSelection);
+        //Prints the results.
+        console.log('The computer chose ' + computerSelection + ' and you chose ' + playerSelection + ' so you: ' + (playRound(playerSelection, computerSelection)));
+        //Increments the win, loss, and tie counters.
+        if (result == 'win'){
+            wins++;
+            console.log('Congratulations! The win loss total is now WINS: ' + wins + ' LOSSES: ' + losses + ' TIES: ' + ties);
+        } else if (result == 'lose'){
+            losses++;
+            console.log('Unfortunate. The win loss total is now WINS: ' + wins + ' LOSSES: ' + losses + ' TIES: ' + ties);
+        } else if (result == 'tie'){
+            ties++;
+            console.log('How boring. The win loss total is now WINS: ' + wins + ' LOSSES: ' + losses + ' TIES: ' + ties); 
+        } else{
+            console.log('error. problem in the win loss tie output if statement.')
+        }
+    }
+    //Outputs when the game is over.
+    if (wins < 5){
+        console.log('You lose. Sorry. If you would like to try again type "game();" into the console.');
+    } else if (losses < 5){
+        console.log('You win! YAY! If you would like to try again type "game();" into the console.');
+    }
+}
